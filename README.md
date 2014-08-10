@@ -3,9 +3,9 @@ Combines [WebdriverIO][io], [Nodeunit][nu] and [synchronize][sync] to form a nod
 
 It essentially does the following:
 
-1)  Uses synchronize on WebdriverIO to make it possible to run instances synchronously (provided they are run in a [fiber][fib]).
-2)  Wraps every nodeunit test case in such a fiber. 
-3)  Adds a WebdriverIO instance to every test case.
+1.  Uses synchronize on WebdriverIO to make it possible to run instances synchronously (provided they are run in a [fiber][fib]).
+2.  Wraps every nodeunit test case in such a fiber. 
+3.  Adds a WebdriverIO instance to every test case.
 
 It comes with these handy features:
 
@@ -16,10 +16,10 @@ It comes with these handy features:
 
 This runner has no known issues, but it has not yet used outside its unit tests. 
 
-## WebdriverIO API
+### WebdriverIO API
 See the [WebdriverIO Github repo][io-api-g], and [the webdriver.io website][io-api-s]. 
 
-Most commands use CSS or XPath selectors. If you use Chrome DevTools, right
+Most commands use CSS or XPath selectors. If you use Chrome DevTools, right-click on any html node to get the CSS or XPath selector. 
 
 ## Install
 Because of [synchronize][sync]'s inevitable dependency on [node-fibers][fib], you probably have to install webfiberunit module with sudo/as administrator. Run:
@@ -80,8 +80,8 @@ Setup:
 OK: 2 assertions (5426ms)
 ```
 
-## The webfiberunit module
-It looks a lot like the nodeunit module. It provides a subset of its methods and utilities, as much as possible in the same format. In practice, `webfiberunit.runFiles()` will be the method you will most likely use.   
+## The module
+The webfiberunit module looks a lot like the nodeunit module. It provides a subset of its methods and utilities, as much as possible in the same format. In practice, `webfiberunit.runFiles()` will be the method you will most likely use.   
 
 ### webfiberunit.runFiles(webdriverConfigs, paths, options)
 Runs any specified webdriver configs against any test modules, and provides the possibility to use the reporter 'hooks'. 
@@ -197,7 +197,7 @@ Default value: `null`
 Offers the possibility to add custom commands to the WebdriverIO instance. See also [WebdriverIO event handling][io-cc].
 
 ## A webfiberunit test suite
-A 'webfiberunit' test suite is almost the same as a nodeunit test suite. The difference is in:
+(elaborate on difference)
 
 ## Test case execution
 Since any test case executed with webfiberunit is intended to use a synchronous webdriverio instance, most test cases should be possible in a fully synchronous format. Taking advantage of this, webfiberunit will, by default, execute several standard calls that should always happen before and after any test case. This is a feature referred to as 'autorun'.  
