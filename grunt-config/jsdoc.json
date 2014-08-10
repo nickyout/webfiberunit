@@ -1,0 +1,12 @@
+{
+    "package": "grunt-jsdoc",
+    "description": "Builds the documentation.",
+    "config": {
+        "dist" : {
+            "src": ["src/**/*.js", "index.js"],
+            "options": {
+                "destination": "doc"
+            }
+        }
+    }
+}

@@ -1,0 +1,31 @@
+{
+  "name": "webfiberunit",
+  "version": "0.1.0",
+  "description": "WebdriverIO + synchronize + nodeunit",
+  "main": "index.js",
+  "scripts": {
+    "test": "grunt nodeunit"
+  },
+  "keywords": [
+    "webdriverjs",
+    "webdriverio",
+    "synchronize",
+    "nodeunit",
+    "integration",
+    "selenium"
+  ],
+  "author": "Nicky Out",
+  "license": "ISC",
+  "dependencies": {
+    "lodash": "^2.4.1",
+    "nodeunit": "^0.9.0",
+    "synchronize": "^0.9.8",
+    "webdriverjs": "^1.7.4"
+  },
+  "devDependencies": {
+    "grunt": "^0.4.5",
+    "grunt-config-plus": "^0.1.5",
+    "grunt-contrib-nodeunit": "^0.4.1",
+    "grunt-jsdoc": "^0.5.6"
+  }
+}

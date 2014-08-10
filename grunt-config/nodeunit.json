@@ -1,0 +1,12 @@
+{
+	"package": "grunt-contrib-nodeunit",
+	"description": "Executes all unit tests",
+	"config": {
+		"fiber": ["test/webfiber.js"],
+		"unit": ["test/webfiberunit.js"],
+		"utils": ["test/utils.js"],
+		"options": {
+			"reporter": "verbose"
+		}
+	}
+}
