@@ -1,4 +1,5 @@
-var webfiber = require('../src/webfiber'),
+var nodeunit = require('nodeunit'),
+	webfiber = require('../src/webfiber'),
 	suite = {
 		opens: function(test, browser) {
 			test.expect(2);
@@ -7,7 +8,6 @@ var webfiber = require('../src/webfiber'),
 					test.ok(true, "Caught error event");
 				});
 				browser.url("http://about:blank");
-				test.ok(false, "Browser throws");
 			} catch (err) {
 				test.ok(true, "Catches errors");
 			}
@@ -16,36 +16,42 @@ var webfiber = require('../src/webfiber'),
 
 		finds: function(test, browser) {
 			test.expect(2);
-			try {
-				var result;
-				browser.url("http://www.google.com");
-				test.ok(true, "Found page");
-				result = browser.getTitle();
-				test.ok(!!result, "Method returned result");
-			} catch (err) {
-				console.log(err);
-				test.ok(false, "No errors");
-			}
+			var result;
+			browser.url("http://www.google.com");
+			test.ok(true, "Found page");
+			result = browser.getTitle();
+			test.ok(!!result, "Method returned result");
 		}
 
 	};
 
 module.exports = {
 
-	"browser": webfiber({
-		browser: {
-			"browserName": "chrome"
-		}
-	}, suite),
-
-	"host.desiredCapabilities": webfiber({
-		host: {
-			desiredCapabilities: {
+	"browser": function(test) {
+		nodeunit.runModule('browser', webfiber({
+			browser: {
 				"browserName": "chrome"
 			}
-		},
-		browser: {
-			"browserName": "super mega barfatron"
-		}
-	}, suite)
+		}, suite), {}, function(err, result) {
+			test.equal(result.passes(), 4, "Executes 2 + 2 tests");
+			test.equal(result.failures(), 1, "Registers 1 failure");
+			test.done();
+		});
+	},
+
+	"host.desiredCapabilities": function(test) {
+		nodeunit.runModule('host.desiredCapabilities', webfiber({
+			host: {
+				desiredCapabilities: {
+					"browserName": "chrome"
+				}
+			},
+			browser: {
+				"browserName": "super mega barfatron"
+			}
+		}, suite), {}, function(err, result) {
+			test.equal(result.passes(), 4, "overrides browser");
+			test.done();
+		})
+	}
 };

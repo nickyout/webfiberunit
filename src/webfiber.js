@@ -2,6 +2,7 @@ var wdjs = require('webdriverjs'),
 	u = require('lodash'),
 	sync = require('synchronize'),
 	debug = require('./debug'),
+	commands = require('./commands'),
 	index = -1;
 
 /**
@@ -89,7 +90,7 @@ function init(webdriverConfig) {
 	var name,
 		browser = webdriverConfig.browser && u.clone(webdriverConfig.browser) || {},
 		remoteConfig = u.merge({ desiredCapabilities: browser }, webdriverConfig.host || {}),
-		helperCommands = webdriverConfig.commands,
+		helperCommands = u.merge({}, commands, webdriverConfig.commands),
 		eventHandlers = webdriverConfig.events;
 
 	var inst = wdjs.remote(remoteConfig);

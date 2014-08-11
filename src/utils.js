@@ -1,5 +1,7 @@
 var util = require('util'),
-	u = require('lodash');
+	u = require('lodash'),
+	n = function() {},
+	muffle = function(fn) { try { fn() } catch (err){} };
 
 function cap(str) {
 	str || (str = '');
@@ -96,5 +98,65 @@ module.exports = {
 			.replace(/%DEVICE%/g, device || '(any device)');
 
 		return util.format.apply(util, [str].concat(Array.prototype.slice.call(arguments, 2)));
+	},
+
+	/**
+	 * Nodeunit test object substitute.
+	 * Contains all the methods of nodeunit's test object, only this object registers nothing.
+	 * <p/>
+	 * Useful if you wish to execute a test case as subroutine of another test case without using its assertions. Just pass this object instead as the subroutine's test argument.
+	 * @memberof module:webfiberutil/src/utils
+	 * @prop {Function} ok - does nothing
+	 * @prop {Function} equal - does nothing
+	 * @prop {Function} notEqual - does nothing
+	 * @prop {Function} strictEqual - does nothing
+	 * @prop {Function} notStrictEqual - does nothing
+	 * @prop {Function} deepEqual - does nothing
+	 * @prop {Function} notDeepEqual - does nothing
+	 * @prop {Function} same - does nothing
+	 * @prop {Function} throws - executes the first argument function inside a try-catch block
+	 * @prop {Function} doesNotThrow - executes the first argument function inside a try-catch block
+	 * @prop {Function} ifError - does nothing
+	 * @prop {Function} expect - does nothing
+	 * @prop {Function} done - does nothing
+	 * @example
+	 * // Run subroutine with testNoop
+	 * var testNoop = require('webfiberunit').utils.testNoop;
+	 * module.exports = {
+	 *
+	 *     // Test if driver can maximize window
+	 *     "maximizeWindow": function(test, browser) {
+	 *         try {
+	 *             browser.windowHandleMaximize();
+	 *             test.ok(true, "Driver supports maximizing window");
+	 *         } catch (err) {
+	 *             test.ok(false, "Driver does not support maximizing window");
+	 *         }
+	 *     },
+	 *
+	 *     // Uses maximizeWindow as subroutine
+	 *     "openMySite": function(test, browser) {
+	 *         // Maximize window if possible, but do not register its test assertions.
+	 *         this.maximizeWindow(testNoop, browser);
+	 *         browser.url("http://localhost/mysite/");
+	 *         // Do register this test assertion
+	 *         test.ok(true, "Opened my local site");
+	 *     }
+	 * }
+	 */
+	testNoop: {
+		ok: n,
+		equal: n,
+		notEqual: n,
+		strictEqual: n,
+		notStrictEqual: n,
+		deepEqual: n,
+		notDeepEqual: n,
+		same: n,
+		throws: muffle,
+		doesNotThrow: muffle,
+		ifError: n,
+		expect: n,
+		done: n
 	}
 };
