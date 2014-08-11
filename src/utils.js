@@ -82,7 +82,7 @@ module.exports = {
 				// Desktop OS
 				str += " on %OS%";
 				if (osVersion) {
-					str += " %OS_VERSION";
+					str += " %OS_VERSION%";
 				}
 			}
 		}
