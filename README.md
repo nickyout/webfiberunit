@@ -299,6 +299,12 @@ grunt jsdoc
 
 The documentation will be built into `doc/` in the module's root folder. 
 
+## Todo:
+
+*   Add JS error tracker
+*   Add utils.testNoop
+*   Enable/provide access to screenshot on error
+
 
 [io]:       https://github.com/webdriverio/webdriverio                          "WebdriverIO (Github)"
 [io-cap]:   https://github.com/webdriverio/webdriverio#desiredcapabilities      "WebdriverIO desired capabilities (Github)"
