@@ -69,11 +69,11 @@ module.exports = {
 				return true;
 			},
 			cond = function() {
-				var present = !window.errorList;
+				var present = !!window.errorList;
 				if (!present) {
 					window.errorList = [];
 				}
-				return present;
+				return !present;
 			},
 			inject = function() {
 				window.errorList || (window.errorList = []);

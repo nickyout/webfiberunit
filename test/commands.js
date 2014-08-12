@@ -13,12 +13,15 @@ module.exports = {
 	},
 
 	"jsError": function(test) {
-		test.expect(5);
+		test.expect(6);
 		inst.url('http://www.google.com')
 			.jsErrorLog(function(err, result) {
 				test.ok(err, "Logging before tracking should throw an error");
 			})
 			.jsErrorTrack()
+			.jsErrorLog(function(err, result) {
+				test.same(result, [], "Logging after tracking (but before error) should return empty array");
+			})
 			.execute("setTimeout(function() {throw new Error(\"fail!\")}, 0)")
 			.pause(1000)
 			// Request error log (with clear flag true)
