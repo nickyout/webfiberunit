@@ -1,5 +1,6 @@
 var nodeunit = require('nodeunit'),
 	webfiber = require('../src/webfiber'),
+	h = require('./config/host'),
 	suite = {
 		opens: function(test, browser) {
 			test.expect(2);
@@ -41,11 +42,11 @@ module.exports = {
 
 	"host.desiredCapabilities": function(test) {
 		nodeunit.runModule('host.desiredCapabilities', webfiber({
-			host: {
+			host: h({
 				desiredCapabilities: {
 					"browserName": "chrome"
 				}
-			},
+			}),
 			browser: {
 				"browserName": "super mega barfatron"
 			}

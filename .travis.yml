@@ -1,13 +1,15 @@
 language: node_js
 node_js:
-  - "0.11"
-  - "0.10"
-  - "0.8"
-  - "0.6"
-before_install: 
-  - "npm install -g grunt-cli"
-  - "npm install -g selenium-standalone"
-install: 
-  - "npm install"
-before_script: 
-  - "start-selenium &"
+- '0.10'
+- '0.8'
+- '0.6'
+before_install:
+- npm install -g grunt-cli
+install:
+- npm install
+env:
+  global:
+  - secure: Lm5Qy7bFX1G9xTabszrwBeXh0SbRiSRih1ih2M2t8ypm6r9LIrAQ1jOTXUXkZYNuLzMmiYVtP0w79Aji9tvJFotYgUdx+Lu/s1Y5Tu/Ewr81SPDLaltL/N5gq6TCf9JUIIIslIt5g8Ae8nErPBxAqZslAjyraW1dgp/NJFOqwjE=
+  - secure: ZmanCyzY/lwiA/8s2Q71+8EJvZA7TfovGVhS2GCfYlWJr30aZsgNFQUkKogDQ70zlufiNp/bPPzqEl2Lt2P0MhBPxazlWDBV5H1LBvThBOl3/sLVKVEhuKf9Ci25Nnr1uFX1E1oQCZB1Zk7gIpSeuOr3VGQg0O0r6wOLwZzNg6Y=
+addons:
+  - sauce_connect: true

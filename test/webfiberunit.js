@@ -1,8 +1,8 @@
 var webfiberunit = require('../src/webfiberunit'),
 	wdio = require('webdriverjs'),
 	path = require('path'),
+	h = require('./config/host'),
 	dummyPath = path.resolve(process.cwd(), "test/fixtures/dummytest.js");
-
 
 module.exports = {
 
@@ -12,11 +12,11 @@ module.exports = {
 			endCalls = 0;
 		test.expect(8);
 		webfiberunit.runModule({
-				host: {
+				host: h({
 					desiredCapabilities: {
 						"browserName": "firefox"
 					}
-				},
+				}),
 				events: {
 					init: function(e) {
 						initCalls++;
@@ -88,18 +88,18 @@ module.exports = {
 	"multiWebdriverModule": function(test) {
 		webfiberunit.runModule([
 				{
-					host: {
+					host: h({
 						desiredCapabilities: {
 							"browserName": "chrome"
 						}
-					}
+					})
 				},
 				{
-					host: {
+					host: h({
 						desiredCapabilities: {
 							"browserName": "firefox"
 						}
-					}
+					})
 				}
 			], 'dummytest', require('./fixtures/dummytest'), {},
 			function(err, assertions) {
@@ -111,11 +111,11 @@ module.exports = {
 	"file": function(test) {
 
 		webfiberunit.runFiles({
-			host: {
+			host: h({
 				desiredCapabilities: {
 					"browserName": "chrome"
 				}
-			}
+			})
 		}, [dummyPath], {
 			done: function (assertions) {
 				test.equal(assertions.passes(), 2, "Found the succeeding tests");
@@ -127,11 +127,11 @@ module.exports = {
 
 	"multiFile": function(test) {
 		webfiberunit.runFiles({
-			host: {
+			host: h({
 				desiredCapabilities: {
 					"browserName": "chrome"
 				}
-			}
+			})
 		}, [dummyPath, dummyPath], {
 			done: function (assertions) {
 				test.equal(assertions.passes(), 4, "Found the succeeding tests");
@@ -146,18 +146,18 @@ module.exports = {
 			correctOrder = true,
 			orderNo = 0,
 			firefox = {
-				host: {
+				host: h({
 					desiredCapabilities: {
 						"browserName": "firefox"
 					}
-				}
+				})
 			},
 			chrome = {
-				host: {
+				host: h({
 					desiredCapabilities: {
 						"browserName": "chrome"
 					}
-				}
+				})
 			},
 			webdriverConfigs = [chrome,firefox];
 

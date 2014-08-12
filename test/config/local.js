@@ -1,13 +1,14 @@
+var h = require('./host');
 module.exports = [{
-	host: {
+	host: h({
 		desiredCapabilities: {
 			"browserName": "chrome"
 		}
-	}
+	})
 }, {
-	host: {
+	host: h({
 		desiredCapabilities: {
 			"browserName": "firefox"
 		}
-	}
+	})
 }];
