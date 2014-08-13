@@ -293,9 +293,10 @@ To build the documentation, make sure to have:
  
 *   Globally available `grunt-cli`
  
-Go to the root folder of this module, and run:
+As `grunt-jsdoc` keeps breaking the travis build, I have currently removed it from devDependencies. You should still be able to install it manually, though it may occasionally fail to do so on the first try. Go to the root folder of this module, and run:
 ```
 npm install
+npm install grunt-jsdoc
 grunt jsdoc
 ```
 
@@ -303,9 +304,13 @@ The documentation will be built into `doc/` in the module's root folder.
 
 ## Todo:
 
-*   Add JS error tracker
-*   Add utils.testNoop
+*   ~~Add JS error tracker~~
+*   ~~Add utils.testNoop~~
 *   Enable/provide access to screenshot on error
+*   Graceful shutdown on Ctrl + C (process.on('SIGINT'))
+*   Add setUp & tearDown for every webdriver instance
+*   Explain the webfiberunit-style test suite
+*   Update webdriverjs to webdriverio (2.0)
 
 
 [io]:       https://github.com/webdriverio/webdriverio                          "WebdriverIO (Github)"
