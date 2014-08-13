@@ -6,6 +6,7 @@ node_js:
 addons:
   sauce_connect: true
 before_install:
+- npm install -g npm
 - npm install -g grunt-cli
 install:
 - npm install

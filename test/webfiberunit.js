@@ -75,7 +75,7 @@ module.exports = {
 		};
 		webfiberunit.runModule(function() {
 				return [
-					wdio.remote({ desiredCapabilities: { browserName: "chrome", penix: "yep" } }),
+					wdio.remote(h({ desiredCapabilities: { browserName: "chrome", penix: "yep" } })),
 					['removeAllListeners', 'on', 'once', 'removeEventListener', 'emit']
 				]
 			}, 'autoless', autolessTestSuite, {}, function(err, assertions) {
