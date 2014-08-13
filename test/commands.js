@@ -1,11 +1,12 @@
 var webdriver = require('webdriverjs'),
 	commands = require('../src/commands'),
 	u = require('lodash'),
+	h = require('./config/host'),
 	inst;
 
 module.exports = {
 	setUp: function(callback) {
-		inst = webdriver.remote({ desiredCapabilities: { browserName: "chrome" }});
+		inst = webdriver.remote(h({ desiredCapabilities: { browserName: "chrome" }}));
 		for (var name in commands) {
 			inst.addCommand(name, commands[name]);
 		}
