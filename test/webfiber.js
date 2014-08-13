@@ -30,6 +30,7 @@ module.exports = {
 
 	"browser": function(test) {
 		nodeunit.runModule('browser', webfiber({
+			host: h(),
 			browser: {
 				"browserName": "chrome"
 			}
