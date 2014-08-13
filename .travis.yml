@@ -9,9 +9,9 @@ before_install:
 - npm install -g npm
 install:
 - npm install
+before_script:
+- export NODE_DEBUG="webfiber request"
 env:
   global:
-  - secure: Lm5Qy7bFX1G9xTabszrwBeXh0SbRiSRih1ih2M2t8ypm6r9LIrAQ1jOTXUXkZYNuLzMmiYVtP0w79Aji9tvJFotYgUdx+Lu/s1Y5Tu/Ewr81SPDLaltL/N5gq6TCf9JUIIIslIt5g8Ae8nErPBxAqZslAjyraW1dgp/NJFOqwjE=
-  - secure: ZmanCyzY/lwiA/8s2Q71+8EJvZA7TfovGVhS2GCfYlWJr30aZsgNFQUkKogDQ70zlufiNp/bPPzqEl2Lt2P0MhBPxazlWDBV5H1LBvThBOl3/sLVKVEhuKf9Ci25Nnr1uFX1E1oQCZB1Zk7gIpSeuOr3VGQg0O0r6wOLwZzNg6Y=
   - secure: P8+om77jHpyd/RrsQyuI2M7zILRq0ufQyugxj519D9mPUUpZu3vED7EyXk40RTaC+zkMsih4EbNtby79fo5j069S8ExLwUor7Q5NAbT17NfphldaTwYIWj46qc9wHSdbEnbHRI8yA0j2PF5W3hk8lM2tyt+QlvPb24oLWWC0ulk=
   - secure: MXt+fXdtGYXJ2OnKsZrgHeRSUKjsBmyJ8hzIwSBUOI8ui/0tAb19LGOV27MWxyPXp443hliAGvC5eCEamDNOmIW4RzrGclFxqvNvrqZs62vqai9Klyyr7Tjb0atWhFZqSdDCD2qo1nB6M49o1+a1nMr7m+zL8g0uabN/eCYiv1Y=
