@@ -1,4 +1,6 @@
-# webfiberunit
+# webfiberunit 
+[![Build Status](https://travis-ci.org/nickyout/webfiberunit.svg?branch=master)](https://travis-ci.org/nickyout/webfiberunit)
+
 Combines [WebdriverIO][io], [Nodeunit][nu] and [synchronize][sync] to form a nodeunit-style synchronous selenium test runner. The main goals were to simplify writing tests, running the same test suites in different browsers and creating a runner that you can trust to run all tests without dying or freezing.  
 
 It essentially does the following:
