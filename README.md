@@ -303,9 +303,13 @@ The documentation will be built into `doc/` in the module's root folder.
 
 ## Todo:
 
-*   Add JS error tracker
-*   Add utils.testNoop
+*   ~~Add JS error tracker~~
+*   ~~Add utils.testNoop~~
 *   Enable/provide access to screenshot on error
+*   Graceful shutdown on Ctrl + C (process.on('SIGINT'))
+*   Add setUp & tearDown for every webdriver instance
+*   Explain the webfiberunit-style test suite
+*   Update webdriverjs to webdriverio (2.0)
 
 
 [io]:       https://github.com/webdriverio/webdriverio                          "WebdriverIO (Github)"
