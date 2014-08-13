@@ -3,10 +3,10 @@ module.exports = {
 		browser.url("http://www.google.com");
 		var title = browser.getTitle();
 		// Funny gimmick, not sure if it works globally...
-		try {
+		/*(try {
 			var countryString = browser.getText('[id="hplogo"] > div');
 			//console.log("Google selected country:", countryString);
-		} catch (err) { }
+		} catch (err) { }*/
 		test.ok(title.search(/google/i) !== -1, "Google still has google in its title");
 
 	},
