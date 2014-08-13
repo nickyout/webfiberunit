@@ -122,8 +122,15 @@ function init(webdriverConfig) {
 function createRunner(webdriverConfig, testFunction, autorun) {
 	typeof autorun === "undefined" && (autorun = true);
 	return function(test) {
+		// If NODEUNIT_FLUSH is truey, mark all tests as done immediately
+		// I see no other alternative aside from breaking into nodeunit atm
+		if (process.env.NODEUNIT_FLUSH) {
+			abort(test);
+			return;
+		}
 		sync.fiber(function() {
-			var i = ++index;
+			var i = ++index,
+				exiter;
 			debug('testcase #%s start, using', i, webdriverConfig);
 			var error = null;
 			try {
@@ -135,22 +142,91 @@ function createRunner(webdriverConfig, testFunction, autorun) {
 						sync(inst, name);
 					}
 				}
+
+				// From this point, init can trigger a browser, which will have to be killed
+				exiter = exitHandler.bind(inst, test);
+				process.on('SIGINT', exiter);
 				if (autorun && inst.init) {
 					inst.init();
-					webdriverConfig.url && inst.url && inst.url(webdriverConfig.url);
+
+					// If desired, possible and not flushing, open url
+					if (!process.env.NODEUNIT_FLUSH && webdriverConfig.url && inst.url) {
+						inst.url(webdriverConfig.url);
+					}
 				}
-				testFunction.call(this, test, inst);
-				autorun && inst.end && inst.end();
+				// Unless flushing, start the tests
+				if (!process.env.NODEUNIT_FLUSH) {
+					testFunction.call(this, test, inst);
+				}
 			} catch (err) {
 				debug('testcase #%s uncaught error (%s)', i, err);
 				error = err;
-				inst && inst.end && inst.end();
 			}
-			autorun && inst && inst.removeAllListeners && inst.removeAllListeners();
-			(autorun || error) && test.done(error);
+			if (autorun || error) {
+				inst && inst.end && inst.end();
+				process.env.NODEUNIT_FLUSH && console.error("Aborting: browser ended");
+				inst && inst.removeAllListeners && inst.removeAllListeners();
+				abort(test, error);
+			}
+			if (exiter) {
+				process.removeListener('SIGINT', exiter);
+			}
 			debug('testcase #%s finish', i);
 		});
 
+	}
+}
+
+// Handles both end and abort cases...
+function abort(test, error) {
+	test.done(error || process.env.NODEUNIT_FLUSH && new Error("Test aborted."));
+}
+
+function exitHandler(test) {
+	console.error(' ');
+	// Finishes all tests
+	process.env.NODEUNIT_FLUSH = true;
+	var inst = this,
+		intervalID,
+		count = 3,
+		p = "Aborting:",
+		exiter = function(err) {
+			console.error(p, (err || "success"));
+			abort(test);
+		},
+		ender = function() {
+			// Prefer end
+			if (inst && inst.end) {
+				console.error(p, "shutting down browser...");
+				inst.end(exiter);
+			} else {
+				// If impossible, kill regardless
+				console.error(p, "did not find any browser. Omitting...");
+				test.done(new Error("Test aborted"));
+			}
+		};
+
+	if (inst.sessionId) {
+		// Session already established, end it
+		console.error(p, "ending session", inst.sessionId);
+		ender();
+	} else {
+		// Wait for init complete, we really want to a sessionId to close down.
+		console.error(p, "waiting for browser...");
+		intervalID = setInterval(function() {
+			if (inst.sessionId || --count==0) {
+				clearInterval(intervalID);
+				ender();
+				return;
+			}
+			console.error(p,"waiting",count,"more seconds...");
+		}, 1000);
+		inst.once('init', function(e) {
+			if (e.sessionId) {
+				clearInterval(intervalID);
+				ender();
+			}
+		});
 	}
 }
 
