@@ -1,6 +1,6 @@
 var u = require('lodash');
 module.exports = function(config) {
-	var sauceEnabled = process.env.hasOwnProperty('SAUCE_USERNAME') && process.env.hasOwnProperty('SAUCE_ACCESS_KEY');
+	var sauceEnabled = !!(process.env.SAUCE_USERNAME && process.env.SAUCE_ACCESS_KEY);
 	console.log("Using " + (sauceEnabled ? "Saucelabs" : "local selenium") + "...");
 	return u.merge({}, config, sauceEnabled ? {
 		// Sauce connect settings
