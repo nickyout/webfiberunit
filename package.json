@@ -1,6 +1,6 @@
 {
   "name": "webfiberunit",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "WebdriverIO + synchronize + nodeunit",
   "main": "index.js",
   "repository": {
