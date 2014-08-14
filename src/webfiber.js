@@ -3,7 +3,8 @@ var wdjs = require('webdriverio'),
 	sync = require('synchronize'),
 	debug = require('./debug'),
 	commands = require('./commands'),
-	index = -1;
+	index = -1,
+	p = "Aborting:";
 
 /**
  * @typedef {Array} InstanceSyncDefinition
@@ -122,12 +123,15 @@ function init(webdriverConfig) {
 function createRunner(webdriverConfig, testFunction, autorun) {
 	typeof autorun === "undefined" && (autorun = true);
 	return function(test) {
+
 		// If NODEUNIT_FLUSH is truey, mark all tests as done immediately
-		// I see no other alternative aside from breaking into nodeunit atm
+		// Should not be necessary... but just in case killing does not work, omitting all will
 		if (process.env.NODEUNIT_FLUSH) {
-			abort(test);
+			console.error(p, "Omitting test...");
+			test.done(new Error("Test aborted."));
 			return;
 		}
+
 		sync.fiber(function() {
 			var i = ++index,
 				exiter;
@@ -162,14 +166,15 @@ function createRunner(webdriverConfig, testFunction, autorun) {
 				debug('testcase #%s uncaught error (%s)', i, err);
 				error = err;
 			}
-			if (autorun || error) {
-				inst && inst.end && inst.end();
-				process.env.NODEUNIT_FLUSH && console.error("Aborting: browser ended");
-				inst && inst.removeAllListeners && inst.removeAllListeners();
-				abort(test, error);
-			}
 			if (exiter) {
 				process.removeListener('SIGINT', exiter);
+			}
+			if (!process.env.NODEUNIT_FLUSH) {
+				if (autorun || error) {
+					inst && inst.end && inst.end();
+					inst && inst.removeAllListeners && inst.removeAllListeners();
+					test.done(error);
+				}
 			}
 			debug('testcase #%s finish', i);
 		});
@@ -177,22 +182,31 @@ function createRunner(webdriverConfig, testFunction, autorun) {
 	}
 }
 
-// Handles both end and abort cases...
-function abort(test, error) {
-	test.done(error || process.env.NODEUNIT_FLUSH && new Error("Test aborted."));
-}
-
 function exitHandler(test) {
-	console.error(' ');
+	if (process.env.NODEUNIT_FLUSH) {
+		console.error(" (Use Ctrl+D to kill immediately)");
+		return;
+	}
+
 	// Finishes all tests
 	process.env.NODEUNIT_FLUSH = true;
+
+	// Death to all inside fiber, except test.done()
+	for (var name in test) {
+		if (typeof test[name] !== "function" || name === "done") {
+			continue;
+		}
+		test[name] = function() {
+			throw new Error("Test aborted");
+		}
+	}
+
 	var inst = this,
 		intervalID,
 		count = 3,
-		p = "Aborting:",
 		exiter = function(err) {
 			console.error(p, (err || "success"));
-			abort(test);
+			process.kill(process.pid, "SIGTERM");
 		},
 		ender = function() {
 			// Prefer end
@@ -206,15 +220,15 @@ function exitHandler(test) {
 			}
 		};
 
-	if (inst.sessionId) {
+	console.error(' ');
+	if (inst.requestHandler.sessionID) {
 		// Session already established, end it
-		console.error(p, "ending session", inst.sessionId);
 		ender();
 	} else {
 		// Wait for init complete, we really want to a sessionId to close down.
-		console.error(p, "waiting for browser...");
+		console.error(p, "waiting to shut down browser...");
 		intervalID = setInterval(function() {
-			if (inst.sessionId || --count==0) {
+			if (inst.requestHandler.sessionID || --count==0) {
 				clearInterval(intervalID);
 				ender();
 				return;
