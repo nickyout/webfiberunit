@@ -1,5 +1,5 @@
 var webfiberunit = require('../src/webfiberunit'),
-	wdio = require('webdriverjs'),
+	wdio = require('webdriverio'),
 	path = require('path'),
 	h = require('./config/host'),
 	dummyPath = path.resolve(process.cwd(), "test/fixtures/dummytest.js");

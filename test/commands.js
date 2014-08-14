@@ -1,4 +1,4 @@
-var webdriver = require('webdriverjs'),
+var webdriver = require('webdriverio'),
 	commands = require('../src/commands'),
 	u = require('lodash'),
 	h = require('./config/host'),

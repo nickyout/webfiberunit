@@ -1,4 +1,4 @@
-var wdjs = require('webdriverjs'),
+var wdjs = require('webdriverio'),
 	u = require('lodash'),
 	sync = require('synchronize'),
 	debug = require('./debug'),
@@ -73,7 +73,7 @@ var wdjs = require('webdriverjs'),
  * @example
  * // A very simple example of the default webdriverio instance
  * function instanceCreator() {
- * 	   var webdriver = require('webdriverjs');
+ * 	   var webdriver = require('webdriverio');
  *     return [
  *         webdriver.remote(),
  *         ['removeAllListeners', 'on', 'once', 'removeEventListener', 'emit']
